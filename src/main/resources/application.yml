@@ -1,13 +1,12 @@
-# port ?? ???? ?
 server:
-  port: 8888
+  port: 8080
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
-    username:
-    password:
+    url: jdbc:mysql://wheelchacha-db.cxuke0mqavt9.ap-northeast-2.rds.amazonaws.com/wheelchacha
+    username: admin
+    password: say1234!
   jap:
     defer-datasource-initialization: true
     show-sql: true

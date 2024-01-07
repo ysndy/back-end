@@ -21,7 +21,7 @@ public class TestService {
     private final TestRepository testRepository;
 
     public String getResultMsg(boolean isSuccess) {
-        if (isSuccess) {
+        if (isSuccess == true) {
             return ErrorCode.SUCCESS.getMessage();
         } else {
             throw new BusinessException(ErrorCode.INVALID_INPUT);

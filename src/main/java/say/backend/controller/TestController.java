@@ -20,8 +20,8 @@ public class TestController {
     @GetMapping("/result-msg")
     public BaseResponse<String> getResultMsg(@RequestBody TestDto testDto) {
         try {
-            testService.getResultMsg(testDto.isSuccess());
-            return new BaseResponse<>("success");
+            String result = testService.getResultMsg(testDto.isSuccess());
+            return new BaseResponse<>(result);
         } catch(BusinessException e) {
             return new BaseResponse<>(e.getErrorCode());
         }
