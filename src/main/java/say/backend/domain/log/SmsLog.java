@@ -23,6 +23,7 @@ public class SmsLog {
     @Column(name="sms_tel")
     private String smsTel;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="sms_state")
     private SmsState smsState;
 
