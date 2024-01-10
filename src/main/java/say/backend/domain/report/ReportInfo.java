@@ -27,6 +27,7 @@ public class ReportInfo {
     @Column(name="content")
     private String content;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="report_state")
     private ReportState reportState;
 
