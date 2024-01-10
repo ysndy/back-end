@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import say.backend.domain.common.DelYn;
+import say.backend.domain.report.ReportInfo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,5 +50,8 @@ public class PlaceInfo {
     private DelYn delYn;
 
     @OneToMany
-    private List<PlaceLink> placeLinkList = new ArrayList<PlaceLink>();
+    private List<PlaceLink> placeLinkList = new ArrayList<>();
+
+    @OneToMany
+    private List<ReportInfo> reportInfoList = new ArrayList<>();
 }
