@@ -24,6 +24,7 @@ public class PlaceLink {
     @JoinColumn(name="place_idx")
     private String placeIdx;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="platform")
     private Platform platform;
 
