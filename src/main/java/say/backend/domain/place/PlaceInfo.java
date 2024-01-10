@@ -8,6 +8,8 @@ import org.hibernate.annotations.DynamicInsert;
 import say.backend.domain.common.DelYn;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -45,4 +47,7 @@ public class PlaceInfo {
     @ColumnDefault("'N'")
     @Column(name="del_yn")
     private DelYn delYn;
+
+    @OneToMany
+    private List<PlaceLink> placeLinkList = new ArrayList<PlaceLink>();
 }
