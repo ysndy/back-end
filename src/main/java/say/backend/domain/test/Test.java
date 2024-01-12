@@ -1,7 +1,6 @@
 // TODO: erd 설계 완료 되면 지울 예정
 package say.backend.domain.test;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
