@@ -9,7 +9,9 @@ spring:
     password: say1234!
   jpa:
     show-sql: true
-    hibernate.ddl-auto: create
+    hibernate:
+      #ddl-auto?: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
