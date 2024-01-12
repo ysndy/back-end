@@ -33,6 +33,7 @@ public class SmsLog {
     @Column(name="mod_dt")
     private LocalDateTime modDt;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'N'")
     @Column(name="del_yn")
     private DelYn delYn;

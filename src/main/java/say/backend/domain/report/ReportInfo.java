@@ -6,8 +6,12 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import say.backend.domain.common.DelYn;
+import say.backend.domain.file.ReportFile;
+import say.backend.domain.place.PlaceInfo;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -22,7 +26,7 @@ public class ReportInfo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="place_idx")
-    private String placeIdx;
+    private PlaceInfo placeIdx;
 
     @Column(name="content")
     private String content;
@@ -37,7 +41,11 @@ public class ReportInfo {
     @Column(name="mod_dt")
     private LocalDateTime modDt;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'N'")
     @Column(name="del_yn")
     private DelYn delYn;
+
+    @OneToMany(mappedBy = "reportIdx")
+    private List<ReportFile> reportFileList = new ArrayList<>();
 }

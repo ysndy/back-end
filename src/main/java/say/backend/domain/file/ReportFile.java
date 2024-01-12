@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import say.backend.domain.file.pk.ReportFilePK;
+import say.backend.domain.report.ReportInfo;
 
 @Builder
 @AllArgsConstructor
@@ -13,6 +13,14 @@ import say.backend.domain.file.pk.ReportFilePK;
 @Getter @Setter @Entity
 @Table(name = "report_file")
 public class ReportFile {
-    @EmbeddedId
-    private ReportFilePK reportFilePK;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="report_idx")
+    @Id
+    private ReportInfo reportIdx;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="file_idx")
+    @Id
+    private FileInfo fileIdx;
+
 }

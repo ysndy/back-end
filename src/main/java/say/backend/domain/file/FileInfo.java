@@ -8,6 +8,8 @@ import org.hibernate.annotations.DynamicInsert;
 import say.backend.domain.common.DelYn;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -39,7 +41,14 @@ public class FileInfo {
     @Column(name="mod_dt")
     private LocalDateTime modDt;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'N'")
     @Column(name="del_yn")
     private DelYn delYn;
+
+    @OneToMany(mappedBy = "placeIdx")
+    private List<PlaceFile> placeFileList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "reportIdx")
+    private List<ReportFile> reportFileList = new ArrayList<>();
 }

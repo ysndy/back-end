@@ -22,7 +22,7 @@ public class PlaceLink {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="place_idx")
-    private String placeIdx;
+    private PlaceInfo placeIdx;
 
     @Enumerated(EnumType.STRING)
     @Column(name="platform")
@@ -37,6 +37,7 @@ public class PlaceLink {
     @Column(name="mod_dt")
     private LocalDateTime modDt;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'N'")
     @Column(name="del_yn")
     private DelYn delYn;

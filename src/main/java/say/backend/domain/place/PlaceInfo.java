@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import say.backend.domain.common.DelYn;
+import say.backend.domain.file.PlaceFile;
 import say.backend.domain.report.ReportInfo;
 
 import java.time.LocalDateTime;
@@ -45,13 +46,17 @@ public class PlaceInfo {
     @Column(name="mod_dt")
     private LocalDateTime modDt;
 
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'N'")
     @Column(name="del_yn")
     private DelYn delYn;
 
-    @OneToMany
+    @OneToMany(mappedBy = "placeIdx")
     private List<PlaceLink> placeLinkList = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "placeIdx")
     private List<ReportInfo> reportInfoList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "placeIdx")
+    private List<PlaceFile> placeFileList = new ArrayList<>();
 }
