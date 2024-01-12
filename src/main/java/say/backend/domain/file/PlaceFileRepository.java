@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface PlaceFileRepository extends JpaRepository<PlaceFile, String> {
-    Optional<PlaceFile> findByFileIdx(String fileIdx);
-    Optional<PlaceFile> findByPlaceIdx(String placeIdx);
+public interface PlaceFileRepository extends JpaRepository<PlaceFile, PlaceFileIdx> {
+    Optional<PlaceFile> findByFileIdx(PlaceFileIdx placeFileIdx);
+    Optional<PlaceFile> findByPlaceIdx(PlaceFileIdx placeFileIdx);
 }
