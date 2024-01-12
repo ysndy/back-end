@@ -46,9 +46,9 @@ public class FileInfo {
     @Column(name="del_yn")
     private DelYn delYn;
 
-    @OneToMany(mappedBy = "placeIdx")
+    @OneToMany(mappedBy = "fileIdx")
     private List<PlaceFile> placeFileList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reportIdx")
+    @OneToMany(mappedBy = "fileIdx")
     private List<ReportFile> reportFileList = new ArrayList<>();
 }
