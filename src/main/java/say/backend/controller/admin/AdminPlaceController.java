@@ -5,8 +5,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
+import say.backend.domain.place.PlaceInfo;
+import say.backend.dto.place.*;
 import say.backend.exception.common.BusinessException;
+import say.backend.exception.common.ErrorCode;
 import say.backend.response.BaseResponse;
+import say.backend.service.PlaceService;
 
 @Slf4j
 @RestController
@@ -15,11 +19,21 @@ import say.backend.response.BaseResponse;
 @RequestMapping("/api/admin/places")
 public class AdminPlaceController {
 
+    private final PlaceService placeService;
+
     @Operation(summary="장소 등록", description = "장소 등록")
-    @PostMapping("/insert")
-    public BaseResponse<String> insertPlace() {
+    @PostMapping("/create")
+    public BaseResponse<PlaceInfo> createPlace(@RequestBody PlaceCreateDto placeCreateDto) {
         try{
-            return new BaseResponse<String>("success");
+            // validation
+            if(placeCreateDto.getPlaceName() == null
+                || placeCreateDto.getAddress() == null
+                || placeCreateDto.getPlaceCategory() == null
+                || placeCreateDto.getCoordinate() == null)
+                throw new BusinessException(ErrorCode.EMPTY_DATA);
+            // call service
+            PlaceInfo resultData = placeService.createPlace(placeCreateDto);
+            return new BaseResponse<PlaceInfo>(resultData);
         } catch(BusinessException e) {
             return new BaseResponse(e.getErrorCode());
         }
