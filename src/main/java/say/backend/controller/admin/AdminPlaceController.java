@@ -69,10 +69,12 @@ public class AdminPlaceController {
     }
 
     @Operation(summary="장소 삭제", description = "idx 해당하는 장소 삭제")
-    @DeleteMapping("/delete")
-    public BaseResponse<String> deletePlace() {
+    @DeleteMapping("/delete/{placeIdx}")
+    public BaseResponse<PlaceInfo> deletePlace(@Parameter(description = "장소고유번호" )@PathVariable("placeIdx") String placeIdx) {
         try{
-            return new BaseResponse<String>("success");
+            // call service
+            PlaceInfo resultData = placeInfoService.deletePlace(placeIdx);
+            return new BaseResponse<PlaceInfo>(resultData);
         } catch(BusinessException e) {
             return new BaseResponse(e.getErrorCode());
         }

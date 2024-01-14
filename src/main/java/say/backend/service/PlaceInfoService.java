@@ -102,12 +102,21 @@ public class PlaceInfoService {
     }
 
     @Transactional
-    public String updatePlace() {
-        return "success";
-    }
+    public String updatePlace() { return "success";}
 
     @Transactional
-    public String deletePlace() {
-        return "success";
+    public PlaceInfo deletePlace(String placeIdx) {
+        try {
+            Optional<PlaceInfo> delData = placeInfoRepository.findByPlaceIdx(placeIdx);
+            if(delData.isEmpty()) {
+                throw new BusinessException(ErrorCode.NO_EXIST_VALUE);
+            }
+            delData.get().setDelYn(DelYn.Y);
+            return delData.get();
+        } catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.DATABASE_ERROR);
+        }
     }
 }
