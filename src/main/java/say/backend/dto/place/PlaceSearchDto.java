@@ -8,11 +8,8 @@ import lombok.Setter;
 @Getter
 @Schema(title = "장소 검색 조건 dto")
 public class PlaceSearchDto {
-    @Schema(description = "장소 idx", example = "")
-    private String placeIdx;
-    @Schema(description = "장소명", example = "")
+    @Schema(description = "장소명", example = "동대문역 전동휠체어급속충전기")
     private String placeName;
     @Schema(description = "장소 카테고리", example = "CHARGE")
     private String placeCategory;
-
 }

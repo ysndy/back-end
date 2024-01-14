@@ -1,6 +1,8 @@
 package say.backend.service;
 
 import say.backend.domain.common.DelYn;
+import say.backend.domain.file.PlaceFileRepository;
+import say.backend.domain.place.PlaceCategory;
 import say.backend.domain.place.PlaceInfo;
 import say.backend.domain.place.PlaceInfoRepository;
 
@@ -14,14 +16,16 @@ import org.springframework.stereotype.Service;
 import say.backend.exception.common.ErrorCode;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class PlaceService {
+public class PlaceInfoService {
 
     private final PlaceInfoRepository placeInfoRepository;
+    private final PlaceFileRepository placeFileRepository;
 
     @Transactional
     public PlaceInfo createPlace(PlaceCreateDto pcd) {
@@ -63,14 +67,38 @@ public class PlaceService {
 
             // return
             return resultData.get();
+        } catch (BusinessException e){
+            throw e;
         } catch(Exception e) {
             throw new BusinessException(ErrorCode.DATABASE_ERROR);
         }
 
     }
 
-    public String getPlaceList() {
-        return "success";
+    public List<PlaceInfo> getPlaceList(String placeName, String placeCategory) {
+        try {
+            PlaceCategory placeCategoryParam = null;
+            if(placeCategory != null) {
+                placeCategoryParam = PlaceCategory.valueOf(placeCategory);
+            }
+
+            List<PlaceInfo> resultData = placeInfoRepository
+                    .findByPlaceNameAndPlaceCategoryAndDelYn(placeName, placeCategoryParam, DelYn.N);
+
+            // check empty data
+            if(resultData.isEmpty()) {
+                throw new BusinessException(ErrorCode.NO_EXIST_VALUE);
+            }
+
+            // return
+            return resultData;
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException(ErrorCode.INVALID_INPUT);
+        } catch (BusinessException e){
+            throw e;
+        } catch(Exception e) {
+            throw new BusinessException(ErrorCode.DATABASE_ERROR);
+        }
     }
 
     @Transactional
