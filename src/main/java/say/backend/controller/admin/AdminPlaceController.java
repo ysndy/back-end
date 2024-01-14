@@ -1,6 +1,7 @@
 package say.backend.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
@@ -40,10 +41,12 @@ public class AdminPlaceController {
     }
 
     @Operation(summary = "장소 상세 정보 조회", description = "idx에 해당하는 장소 정보 1개 반환")
-    @GetMapping("/detail")
-    public BaseResponse<String> getPlaceDetail() {
+    @GetMapping("/{placeIdx}")
+    public BaseResponse<PlaceInfo> getPlaceDetail(@Parameter(description = "장소고유번호" )@PathVariable("placeIdx") String placeIdx) {
         try{
-            return new BaseResponse<String>("success");
+            // call service
+            PlaceInfo resultData = placeService.getPlaceDetail(placeIdx);
+            return new BaseResponse<PlaceInfo>(resultData);
         } catch(BusinessException e) {
             return new BaseResponse(e.getErrorCode());
         }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import say.backend.exception.common.ErrorCode;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -50,18 +51,34 @@ public class PlaceService {
         }
     }
 
-    public String getPlaceDetail() {
-        return "success";
+    public PlaceInfo getPlaceDetail(String placeIdx) {
+        try{
+            // get data
+            Optional<PlaceInfo> resultData = placeInfoRepository.findByPlaceIdx(placeIdx);
+
+            // check empty value
+            if(resultData.isEmpty()) {
+                throw new BusinessException(ErrorCode.NO_EXIST_VALUE);
+            }
+
+            // return
+            return resultData.get();
+        } catch(Exception e) {
+            throw new BusinessException(ErrorCode.DATABASE_ERROR);
+        }
+
     }
 
     public String getPlaceList() {
         return "success";
     }
 
+    @Transactional
     public String updatePlace() {
         return "success";
     }
 
+    @Transactional
     public String deletePlace() {
         return "success";
     }
