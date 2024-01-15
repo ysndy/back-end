@@ -25,7 +25,6 @@ import java.util.UUID;
 public class PlaceInfoService {
 
     private final PlaceInfoRepository placeInfoRepository;
-    private final PlaceFileRepository placeFileRepository;
 
     @Transactional
     public PlaceInfo createPlace(PlaceCreateDto pcd) {
@@ -109,6 +108,7 @@ public class PlaceInfoService {
             if (addrDetail != null) { updateData.get().setAddressDetail(addrDetail); }
             if (pCategory != null) { updateData.get().setPlaceCategory(pCategory); }
             if (coordinate != null) { updateData.get().setCoordinate(coordinate); }
+            updateData.get().setModDt(LocalDateTime.now());
 
             return updateData.get();
         } catch(BusinessException e) {
@@ -126,6 +126,7 @@ public class PlaceInfoService {
                 throw new BusinessException(ErrorCode.NO_EXIST_VALUE);
             }
             delData.get().setDelYn(DelYn.Y);
+            delData.get().setModDt(LocalDateTime.now());
             return delData.get();
         } catch (BusinessException e) {
             throw e;
