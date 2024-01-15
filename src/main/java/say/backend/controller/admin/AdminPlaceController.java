@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
+import say.backend.domain.place.PlaceCategory;
 import say.backend.domain.place.PlaceInfo;
 import say.backend.domain.place.PlaceInfoRepository;
 import say.backend.dto.place.*;
@@ -82,9 +83,15 @@ public class AdminPlaceController {
 
     @Operation(summary="장소 정보 수정", description = "idx에 해당하는 장소 정보 수정")
     @PatchMapping("/update")
-    public BaseResponse<String> updatePlace() {
+    public BaseResponse<PlaceInfo> updatePlace(@RequestBody PlaceUpdateDto placeUpdateDto) {
         try{
-            return new BaseResponse<String>("success");
+            //validation
+            if(placeUpdateDto.getPlaceIdx() == null) {
+                throw new BusinessException(ErrorCode.EMPTY_DATA);
+            }
+            // call service
+            PlaceInfo resultData = placeInfoService.updatePlace(placeUpdateDto.getPlaceIdx(), placeUpdateDto.getPlaceName(), placeUpdateDto.getAddress(), placeUpdateDto.getAddressDetail(), placeUpdateDto.getPlaceCategory(), placeUpdateDto.getCoordinate());
+            return new BaseResponse<PlaceInfo>(resultData);
         } catch(BusinessException e) {
             return new BaseResponse(e.getErrorCode());
         }
