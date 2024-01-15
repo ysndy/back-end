@@ -75,15 +75,10 @@ public class PlaceInfoService {
 
     }
 
-    public List<PlaceInfo> getPlaceList(String placeName, String placeCategory) {
+    public List<PlaceInfo> getPlaceList(String placeName, PlaceCategory placeCategory) {
         try {
-            PlaceCategory placeCategoryParam = null;
-            if(placeCategory != null) {
-                placeCategoryParam = PlaceCategory.valueOf(placeCategory);
-            }
-
             List<PlaceInfo> resultData = placeInfoRepository
-                    .findByPlaceNameAndPlaceCategoryAndDelYn(placeName, placeCategoryParam, DelYn.N);
+                    .findByPlaceNameAndPlaceCategoryAndDelYn(placeName, placeCategory, DelYn.N);
 
             // check empty data
             if(resultData.isEmpty()) {
