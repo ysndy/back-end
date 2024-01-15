@@ -22,4 +22,14 @@ public interface PlaceInfoRepository extends JpaRepository<PlaceInfo, String> {
             @Param("placeCategory") PlaceCategory placeCategory,
             @Param("delYn") DelYn delYn
     );
+
+    @Query("SELECT p FROM PlaceInfo p " +
+            "WHERE (:placeName IS NULL OR p.placeName LIKE %:placeName%) " +
+            "AND (:placeCategoryList IS NULL OR p.placeCategory IN :placeCategoryList) " +
+            "AND (:delYn IS NULL OR p.delYn = :delYn)")
+    List<PlaceInfo> findByPlaceNameAndPlaceCategoryListAndDelYn(
+            @Param("placeName") String placeName,
+            @Param("placeCategoryList") List<PlaceCategory> placeCategoryList,
+            @Param("delYn") DelYn delYn
+    );
 }

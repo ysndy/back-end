@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import say.backend.domain.place.PlaceCategory;
 
+import java.util.List;
+
 @Setter
 @Getter
 @Schema(title = "장소 검색 조건 dto")
@@ -13,4 +15,6 @@ public class PlaceSearchDto {
     private String placeName;
     @Schema(description = "장소 카테고리", example = "CHARGE")
     private PlaceCategory placeCategory;
+    @Schema(description = "장소 카테고리 리스트", example = "[CHARGE, REPAIR]")
+    private List<PlaceCategory> placeCategoryList;
 }

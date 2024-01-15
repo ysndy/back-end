@@ -95,6 +95,27 @@ public class PlaceInfoService {
         }
     }
 
+    public List<PlaceInfo> getPlaceList(String placeName, List<PlaceCategory> placeCategoryList) {
+        try {
+            List<PlaceInfo> resultData = placeInfoRepository
+                    .findByPlaceNameAndPlaceCategoryListAndDelYn(placeName, placeCategoryList, DelYn.N);
+
+            // check empty data
+            if(resultData.isEmpty()) {
+                throw new BusinessException(ErrorCode.NO_EXIST_VALUE);
+            }
+
+            // return
+            return resultData;
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException(ErrorCode.INVALID_INPUT);
+        } catch (BusinessException e){
+            throw e;
+        } catch(Exception e) {
+            throw new BusinessException(ErrorCode.DATABASE_ERROR);
+        }
+    }
+
     @Transactional
     public PlaceInfo updatePlace(String pIdx, String pName, String addr, String addrDetail, PlaceCategory pCategory, String coordinate) {
         try {
