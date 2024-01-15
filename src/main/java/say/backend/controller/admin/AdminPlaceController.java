@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
+import say.backend.domain.place.PlaceCategory;
 import say.backend.domain.place.PlaceInfo;
 import say.backend.domain.place.PlaceInfoRepository;
 import say.backend.dto.place.*;
@@ -56,7 +57,8 @@ public class AdminPlaceController {
         }
     }
 
-    @Operation(summary="장소 리스트 조회", description = "필터링 조건에 맞는 장소 리스트 반환")
+    @Operation(summary="장소 리스트 조회", description = "필터링 조건에 맞는 장소 리스트 반환" +
+            " (주의사항: placeCategory로 enum 값 외의 값을 주면 400error 뜸.)")
     @GetMapping("/list")
     public BaseResponse<List<PlaceInfo>> getPlaceList(@RequestBody PlaceSearchDto placeSearchDto) {
         try{
@@ -69,10 +71,12 @@ public class AdminPlaceController {
     }
 
     @Operation(summary="장소 삭제", description = "idx 해당하는 장소 삭제")
-    @DeleteMapping("/delete")
-    public BaseResponse<String> deletePlace() {
+    @DeleteMapping("/delete/{placeIdx}")
+    public BaseResponse<PlaceInfo> deletePlace(@Parameter(description = "장소고유번호" )@PathVariable("placeIdx") String placeIdx) {
         try{
-            return new BaseResponse<String>("success");
+            // call service
+            PlaceInfo resultData = placeInfoService.deletePlace(placeIdx);
+            return new BaseResponse<PlaceInfo>(resultData);
         } catch(BusinessException e) {
             return new BaseResponse(e.getErrorCode());
         }
@@ -80,9 +84,15 @@ public class AdminPlaceController {
 
     @Operation(summary="장소 정보 수정", description = "idx에 해당하는 장소 정보 수정")
     @PatchMapping("/update")
-    public BaseResponse<String> updatePlace() {
+    public BaseResponse<PlaceInfo> updatePlace(@RequestBody PlaceUpdateDto placeUpdateDto) {
         try{
-            return new BaseResponse<String>("success");
+            //validation
+            if(placeUpdateDto.getPlaceIdx() == null) {
+                throw new BusinessException(ErrorCode.EMPTY_DATA);
+            }
+            // call service
+            PlaceInfo resultData = placeInfoService.updatePlace(placeUpdateDto.getPlaceIdx(), placeUpdateDto.getPlaceName(), placeUpdateDto.getAddress(), placeUpdateDto.getAddressDetail(), placeUpdateDto.getPlaceCategory(), placeUpdateDto.getCoordinate());
+            return new BaseResponse<PlaceInfo>(resultData);
         } catch(BusinessException e) {
             return new BaseResponse(e.getErrorCode());
         }

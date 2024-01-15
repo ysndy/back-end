@@ -25,7 +25,6 @@ import java.util.UUID;
 public class PlaceInfoService {
 
     private final PlaceInfoRepository placeInfoRepository;
-    private final PlaceFileRepository placeFileRepository;
 
     @Transactional
     public PlaceInfo createPlace(PlaceCreateDto pcd) {
@@ -75,15 +74,10 @@ public class PlaceInfoService {
 
     }
 
-    public List<PlaceInfo> getPlaceList(String placeName, String placeCategory) {
+    public List<PlaceInfo> getPlaceList(String placeName, PlaceCategory placeCategory) {
         try {
-            PlaceCategory placeCategoryParam = null;
-            if(placeCategory != null) {
-                placeCategoryParam = PlaceCategory.valueOf(placeCategory);
-            }
-
             List<PlaceInfo> resultData = placeInfoRepository
-                    .findByPlaceNameAndPlaceCategoryAndDelYn(placeName, placeCategoryParam, DelYn.N);
+                    .findByPlaceNameAndPlaceCategoryAndDelYn(placeName, placeCategory, DelYn.N);
 
             // check empty data
             if(resultData.isEmpty()) {
@@ -102,12 +96,42 @@ public class PlaceInfoService {
     }
 
     @Transactional
-    public String updatePlace() {
-        return "success";
+    public PlaceInfo updatePlace(String pIdx, String pName, String addr, String addrDetail, PlaceCategory pCategory, String coordinate) {
+        try {
+            Optional<PlaceInfo> updateData = placeInfoRepository.findByPlaceIdx(pIdx);
+            if(updateData.isEmpty()) {
+                throw new BusinessException(ErrorCode.NO_EXIST_VALUE);
+            }
+
+            if (pName != null) { updateData.get().setPlaceName(pName); }
+            if (addr != null) { updateData.get().setAddress(addr); }
+            if (addrDetail != null) { updateData.get().setAddressDetail(addrDetail); }
+            if (pCategory != null) { updateData.get().setPlaceCategory(pCategory); }
+            if (coordinate != null) { updateData.get().setCoordinate(coordinate); }
+            updateData.get().setModDt(LocalDateTime.now());
+
+            return updateData.get();
+        } catch(BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.DATABASE_ERROR);
+        }
     }
 
     @Transactional
-    public String deletePlace() {
-        return "success";
+    public PlaceInfo deletePlace(String placeIdx) {
+        try {
+            Optional<PlaceInfo> delData = placeInfoRepository.findByPlaceIdx(placeIdx);
+            if(delData.isEmpty()) {
+                throw new BusinessException(ErrorCode.NO_EXIST_VALUE);
+            }
+            delData.get().setDelYn(DelYn.Y);
+            delData.get().setModDt(LocalDateTime.now());
+            return delData.get();
+        } catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.DATABASE_ERROR);
+        }
     }
 }
